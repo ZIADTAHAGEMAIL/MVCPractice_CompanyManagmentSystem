@@ -1,0 +1,90 @@
+﻿@model MVCPractice.ViewModels.AddEmployeeVM
+<div class="mb-3">
+    <button type="button"
+            class="btn btn-outline-secondary"
+            onclick="if (history.length > 1) { history.back(); } else { window.location.href='/Employee/Index'; }">
+        ← رجوع للقائمة
+    </button>
+</div>
+@{
+    ViewData["Title"] = "إضافة موظف جديد";
+}
+
+<div class="container mt-4">
+    <h2>إضافة موظف جديد</h2>
+    <hr />
+
+    <form asp-controller="Employee" asp-action="SaveAdd" method="post">
+        <div asp-validation-summary="All" class="text-danger mb-3"></div>
+
+        <div class="mb-3">
+            <label asp-for="Name" class="form-label">اسم الموظف</label>
+            <input asp-for="Name" class="form-control" />
+            <span asp-validation-for="Name" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="Age" class="form-label">العمر</label>
+            <input asp-for="Age" type="number" class="form-control" />
+            <span asp-validation-for="Age" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="Salary" class="form-label">المرتب</label>
+            <input asp-for="Salary" type="number" class="form-control" />
+            <span asp-validation-for="Salary" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="Phone" class="form-label">رقم الهاتف</label>
+            <input asp-for="Phone" class="form-control" />
+            <span asp-validation-for="Phone" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="Email" class="form-label">البريد الإلكتروني</label>
+            <input asp-for="Email" type="email" class="form-control" />
+            <span asp-validation-for="Email" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="Address" class="form-label">العنوان</label>
+            <input asp-for="Address" class="form-control" />
+            <span asp-validation-for="Address" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="HireDate" class="form-label">تاريخ التعيين</label>
+            <input asp-for="HireDate" type="date" class="form-control" />
+            <span asp-validation-for="HireDate" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="DepartmentId" class="form-label">القسم</label>
+            <select asp-for="DepartmentId"
+                    class="form-select"
+                    asp-items="@(new SelectList(Model.Departments, "Id", "Name"))">
+                <option value="">-- اختر القسم --</option>
+            </select>
+            <span asp-validation-for="DepartmentId" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="ImageUrl" class="form-label">رابط الصورة</label>
+            <input asp-for="ImageUrl" class="form-control" />
+            <span asp-validation-for="ImageUrl" class="text-danger"></span>
+        </div>
+
+        <div class="mt-4">
+            <button type="submit" class="btn btn-success">حفظ الموظف</button>
+            <a asp-controller="Employee" asp-action="Index" class="btn btn-secondary">إلغاء</a>
+        </div>
+
+    </form>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

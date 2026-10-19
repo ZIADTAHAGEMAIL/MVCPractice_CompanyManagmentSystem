@@ -1,0 +1,87 @@
+﻿@model List<MVCPractice.ViewModels.ProjectVM>
+<div class="mb-3">
+    <button type="button"
+            class="btn btn-outline-secondary"
+            onclick="window.location.href='/Dashboard/Index';">
+        ← رجوع للرئيسية
+    </button>
+</div>
+<h2>المشاريع</h2>
+
+<a asp-controller="Project"
+   asp-action="Add"
+   class="btn btn-primary mb-3">
+    إضافة مشروع
+</a>
+
+<table class="table table-bordered table-striped">
+    <thead>
+        <tr>
+            <th>اسم المشروع</th>
+            <th>الميزانية</th>
+            <th>تاريخ البداية</th>
+            <th>تاريخ النهاية</th>
+            <th>الموظفون المشاركون</th>
+            <th>الإجراءات</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        @if (Model.Any())
+        {
+            @foreach (var project in Model)
+            {
+                <tr>
+                    <td>@project.Title</td>
+                    <td>@project.Budget</td>
+                    <td>@project.StartDate.ToString("yyyy-MM-dd")</td>
+                    <td>@project.EndDate.ToString("yyyy-MM-dd")</td>
+
+                    <td>
+                        @if (project.Employees.Any())
+                        {
+                            <ul class="mb-0">
+                                @foreach (var emp in project.Employees)
+                                {
+                                    <li>@emp.Name</li>
+                                }
+                            </ul>
+                        }
+                        else
+                        {
+                            <span class="text-muted">لا يوجد موظفون</span>
+                        }
+                    </td>
+
+                    <td>
+                        <a asp-controller="Project"
+                           asp-action="Edit"
+                           asp-route-id="@project.Id"
+                           class="btn btn-warning btn-sm">
+                            تعديل
+                        </a>
+
+                        <form asp-controller="Project"
+                              asp-action="Delete"
+                              asp-route-id="@project.Id"
+                              method="post"
+                              style="display:inline"
+                              onsubmit="return confirm('هل أنت متأكد من حذف المشروع؟');">
+                            <button type="submit" class="btn btn-danger btn-sm">
+                                حذف
+                            </button>
+                        </form>
+                    </td>
+                </tr>
+            }
+        }
+        else
+        {
+            <tr>
+                <td colspan="6" class="text-center">
+                    لا توجد مشاريع مسجلة.
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

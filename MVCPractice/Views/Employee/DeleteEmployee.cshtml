@@ -1,0 +1,29 @@
+﻿@model MVCPractice.Models.Employee
+
+@{
+    ViewData["Title"] = "حذف موظف";
+}
+
+<h2 class="text-danger mb-4">تأكيد حذف الموظف</h2>
+
+<div class="alert alert-warning">
+    <h4>هل أنت متأكد من رغبتك في حذف هذا الموظف؟</h4>
+    <p>هذا الإجراء لا يمكن التراجع عنه.</p>
+</div>
+
+<div class="card col-md-6 mb-4">
+    <div class="card-body">
+        <h5 class="card-title">@Model.Name</h5>
+        <p class="card-text"><strong>العمر:</strong> @Model.Age</p>
+        <p class="card-text"><strong>المرتب:</strong> @Model.Salary.ToString("C")</p>
+        <p class="card-text"><strong>القسم:</strong> @Model.Department?.Name</p>
+    </div>
+</div>
+
+<form asp-action="Delete" asp-controller="Employee" method="post">
+    @* نمرر الـ Id في input hidden لضمان وصوله للـ POST *@
+    <input type="hidden" asp-for="Id" />
+    
+    <button type="submit" class="btn btn-danger">نعم، احذف الموظف</button>
+    <a asp-action="Index" class="btn btn-secondary">إلغاء وتراجع</a>
+</form>

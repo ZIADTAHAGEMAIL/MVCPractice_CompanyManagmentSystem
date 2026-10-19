@@ -1,0 +1,59 @@
+﻿@model MVCPractice.ViewModels.RelativeVM
+<div class="mb-3">
+    <button type="button"
+            class="btn btn-outline-secondary"
+            onclick="if (history.length > 1) { history.back(); } else { window.location.href='/Relative/Index'; }">
+        ← رجوع
+    </button>
+</div>
+@{
+    ViewData["Title"] = "تعديل بيانات القريب";
+}
+
+<div class="container mt-4">
+    <h2>تعديل بيانات القريب</h2>
+    <hr />
+
+    <div class="row">
+        <div class="col-md-6">
+            <form asp-controller="Relative" asp-action="SaveEdit" asp-route-id="@Model.Id" method="post">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                <input type="hidden" asp-for="Id" />
+
+                <div class="mb-3">
+                    <label asp-for="Name" class="form-label">اسم القريب</label>
+                    <input asp-for="Name" class="form-control" />
+                    <span asp-validation-for="Name" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="Relation" class="form-label">صلة القرابة</label>
+                    <input asp-for="Relation" class="form-control" />
+                    <span asp-validation-for="Relation" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="EmployeeId" class="form-label">الموظف</label>
+                    <select asp-for="EmployeeId"
+                            class="form-select"
+                            asp-items="@(new SelectList(Model.Employees, "Id", "Name"))">
+                        <option value="">-- اختر الموظف --</option>
+                    </select>
+                    <span asp-validation-for="EmployeeId" class="text-danger"></span>
+                </div>
+
+                <div class="mt-4">
+                    <button type="submit" class="btn btn-success">حفظ التعديلات</button>
+                    <a asp-controller="Relative" asp-action="Index" class="btn btn-secondary">عودة للقائمة</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

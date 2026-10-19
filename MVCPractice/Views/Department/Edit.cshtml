@@ -1,0 +1,49 @@
+﻿@model MVCPractice.ViewModels.DepartmentVM
+<div class="mb-3">
+    <button type="button"
+            class="btn btn-outline-secondary"
+            onclick="if (history.length > 1) { history.back(); } else { window.location.href='/Department/Index'; }">
+        ← رجوع
+    </button>
+</div>
+@{
+    ViewData["Title"] = "تعديل القسم";
+}
+
+<div class="container mt-4">
+    <h2>تعديل بيانات القسم</h2>
+    <hr />
+
+    <div class="row">
+        <div class="col-md-6">
+            <form asp-controller="Department" asp-action="SaveEdit" method="post">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                <input type="hidden" asp-for="Id" />
+
+                <div class="mb-3">
+                    <label asp-for="Name" class="form-label">اسم القسم</label>
+                    <input asp-for="Name" class="form-control" />
+                    <span asp-validation-for="Name" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="Description" class="form-label">وصف القسم</label>
+                    <textarea asp-for="Description" class="form-control" rows="3"></textarea>
+                    <span asp-validation-for="Description" class="text-danger"></span>
+                </div>
+
+                <div class="mt-4">
+                    <button type="submit" class="btn btn-success">حفظ التعديلات</button>
+                    <a asp-controller="Department" asp-action="Index" class="btn btn-secondary">عودة للقائمة</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

@@ -1,0 +1,488 @@
+﻿@model MVCPractice.ViewModels.DashboardVM
+
+@{
+    ViewData["Title"] = "Dashboard";
+}
+
+<style>
+    .dashboard-page {
+        direction: rtl;
+        background: #f4f7fb;
+        padding: 24px;
+        min-height: 100vh;
+        color: #172033;
+    }
+
+    .dashboard-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 16px;
+        flex-wrap: wrap;
+        margin-bottom: 28px;
+    }
+
+        .dashboard-header h2 {
+            font-weight: 800;
+            margin-bottom: 6px;
+        }
+
+    .dashboard-muted {
+        color: #7b8498;
+        font-size: 14px;
+    }
+
+    .dashboard-welcome {
+        background: linear-gradient(120deg, #182848, #3156a5);
+        color: white;
+        padding: 28px;
+        border-radius: 22px;
+        margin-bottom: 26px;
+        box-shadow: 0 12px 30px rgba(35, 65, 125, .15);
+    }
+
+        .dashboard-welcome h3 {
+            font-weight: 800;
+            margin-bottom: 10px;
+        }
+
+        .dashboard-welcome p {
+            color: #dce6ff;
+            margin-bottom: 20px;
+        }
+
+    .dashboard-section-title {
+        font-weight: 800;
+        font-size: 19px;
+        margin: 28px 0 16px;
+    }
+
+    .stat-card {
+        background: white;
+        border: 1px solid #edf0f6;
+        border-radius: 18px;
+        padding: 22px;
+        height: 100%;
+        transition: transform .2s, box-shadow .2s;
+        box-shadow: 0 5px 18px rgba(30, 45, 80, .035);
+    }
+
+        .stat-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 28px rgba(30, 45, 80, .09);
+        }
+
+    .stat-icon {
+        width: 48px;
+        height: 48px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 14px;
+        font-size: 24px;
+        margin-bottom: 18px;
+    }
+
+    .stat-number {
+        font-size: 30px;
+        font-weight: 800;
+        margin: 8px 0;
+        overflow-wrap: anywhere;
+    }
+
+    .stat-link {
+        display: inline-block;
+        margin-top: 10px;
+        text-decoration: none;
+        font-weight: 700;
+        font-size: 13px;
+    }
+
+    .dashboard-panel {
+        background: white;
+        border: 1px solid #edf0f6;
+        border-radius: 18px;
+        padding: 22px;
+        height: 100%;
+        box-shadow: 0 5px 18px rgba(30, 45, 80, .035);
+    }
+
+        .dashboard-panel h5 {
+            font-weight: 800;
+            margin-bottom: 18px;
+        }
+
+    .dashboard-table {
+        vertical-align: middle;
+        margin-bottom: 0;
+    }
+
+        .dashboard-table thead th {
+            color: #7b8498;
+            font-size: 13px;
+            font-weight: 600;
+            border-bottom-color: #edf0f6;
+            white-space: nowrap;
+        }
+
+        .dashboard-table td {
+            padding-top: 14px;
+            padding-bottom: 14px;
+        }
+
+    .dashboard-action {
+        background: white;
+        border: 1px solid #e8ecf4;
+        border-radius: 15px;
+        padding: 18px;
+        height: 100%;
+        text-decoration: none;
+        color: #172033;
+        display: block;
+        transition: all .2s;
+    }
+
+        .dashboard-action:hover {
+            border-color: #3156a5;
+            transform: translateY(-3px);
+            color: #3156a5;
+            box-shadow: 0 8px 20px rgba(35, 65, 125, .08);
+        }
+
+        .dashboard-action .action-icon {
+            font-size: 25px;
+            margin-bottom: 12px;
+        }
+
+        .dashboard-action strong {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+    .dashboard-btn {
+        border-radius: 10px;
+        padding: 10px 17px;
+        font-weight: 700;
+    }
+
+    .dashboard-pill {
+        display: inline-block;
+        border-radius: 8px;
+        padding: 5px 9px;
+        background: #eef3ff;
+        color: #3156a5;
+        font-size: 12px;
+        white-space: nowrap;
+    }
+
+    .dashboard-empty {
+        color: #7b8498;
+        text-align: center;
+        padding: 25px 8px;
+    }
+</style>
+
+<div class="dashboard-page">
+
+    <div class="dashboard-header">
+        <div>
+            <h2>لوحة التحكم 👋</h2>
+            <div class="dashboard-muted">
+                نظرة عامة على نظام إدارة الموظفين والأقسام والمشروعات
+            </div>
+        </div>
+
+        <a asp-controller="Home"
+           asp-action="Index"
+           class="btn btn-outline-secondary dashboard-btn">
+            الصفحة الرئيسية
+        </a>
+    </div>
+
+    <div class="dashboard-welcome">
+        <h3>مرحبًا بك في نظام إدارة الشركة</h3>
+        <p>
+            تابع بيانات الشركة، وأدر الموظفين والأقسام والمشروعات
+            من مكان واحد.
+        </p>
+
+        <a asp-controller="Employee"
+           asp-action="Index"
+           class="btn btn-light dashboard-btn">
+            إدارة الموظفين ←
+        </a>
+
+        <a asp-controller="Project"
+           asp-action="Index"
+           class="btn btn-outline-light dashboard-btn me-2">
+            استعراض المشروعات
+        </a>
+    </div>
+
+    <h4 class="dashboard-section-title">📊 إحصائيات النظام</h4>
+
+    <div class="row g-3">
+
+        <div class="col-12 col-sm-6 col-xl-3">
+            <div class="stat-card">
+                <div class="stat-icon"
+                     style="background:#eaf1ff;color:#3156a5">
+                    👥
+                </div>
+                <div class="dashboard-muted">إجمالي الموظفين</div>
+                <div class="stat-number">@Model.EmployeesCount</div>
+                <a asp-controller="Employee" asp-action="Index"
+                   class="stat-link" style="color:#3156a5">
+                    عرض الموظفين ←
+                </a>
+            </div>
+        </div>
+
+        <div class="col-12 col-sm-6 col-xl-3">
+            <div class="stat-card">
+                <div class="stat-icon"
+                     style="background:#e6f8f0;color:#16845b">
+                    🏢
+                </div>
+                <div class="dashboard-muted">إجمالي الأقسام</div>
+                <div class="stat-number">@Model.DepartmentsCount</div>
+                <a asp-controller="Department" asp-action="Index"
+                   class="stat-link" style="color:#16845b">
+                    عرض الأقسام ←
+                </a>
+            </div>
+        </div>
+
+        <div class="col-12 col-sm-6 col-xl-3">
+            <div class="stat-card">
+                <div class="stat-icon"
+                     style="background:#fff1df;color:#c87917">
+                    📁
+                </div>
+                <div class="dashboard-muted">إجمالي المشروعات</div>
+                <div class="stat-number">@Model.ProjectsCount</div>
+                <a asp-controller="Project" asp-action="Index"
+                   class="stat-link" style="color:#c87917">
+                    عرض المشروعات ←
+                </a>
+            </div>
+        </div>
+
+        <div class="col-12 col-sm-6 col-xl-3">
+            <div class="stat-card">
+                <div class="stat-icon"
+                     style="background:#f3eaff;color:#8052bd">
+                    👨‍👩‍👧
+                </div>
+                <div class="dashboard-muted">إجمالي الأقارب</div>
+                <div class="stat-number">@Model.RelativesCount</div>
+                <a asp-controller="Relative" asp-action="Index"
+                   class="stat-link" style="color:#8052bd">
+                    عرض الأقارب ←
+                </a>
+            </div>
+        </div>
+
+        <div class="col-12">
+            <div class="stat-card">
+                <div class="d-flex align-items-center gap-3">
+                    <div class="stat-icon mb-0"
+                         style="background:#fff0f0;color:#d24b4b">
+                        💰
+                    </div>
+                    <div>
+                        <div class="dashboard-muted">متوسط ميزانية المشروع</div>
+                        <div class="stat-number" style="font-size:26px">
+                            @Model.AverageProjectBudget.ToString("N2")
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <h4 class="dashboard-section-title">⚡ الوصول السريع</h4>
+
+    <div class="row g-3">
+
+        <div class="col-6 col-md-3">
+            <a asp-controller="Employee" asp-action="Add"
+               class="dashboard-action">
+                <div class="action-icon">➕ 👤</div>
+                <strong>إضافة موظف</strong>
+                <div class="dashboard-muted">تسجيل موظف جديد</div>
+            </a>
+        </div>
+
+        <div class="col-6 col-md-3">
+            <a asp-controller="Department" asp-action="Add"
+               class="dashboard-action">
+                <div class="action-icon">➕ 🏢</div>
+                <strong>إضافة قسم</strong>
+                <div class="dashboard-muted">إنشاء قسم جديد</div>
+            </a>
+        </div>
+
+        <div class="col-6 col-md-3">
+            <a asp-controller="Project" asp-action="Add"
+               class="dashboard-action">
+                <div class="action-icon">➕ 📁</div>
+                <strong>إضافة مشروع</strong>
+                <div class="dashboard-muted">إنشاء مشروع جديد</div>
+            </a>
+        </div>
+
+        <div class="col-6 col-md-3">
+            <a asp-controller="Relative" asp-action="Add"
+               class="dashboard-action">
+                <div class="action-icon">➕ 👨‍👩‍👧</div>
+                <strong>إضافة قريب</strong>
+                <div class="dashboard-muted">ربط قريب بموظف</div>
+            </a>
+        </div>
+
+        <div class="col-6 col-md-4 col-xl-4">
+            <a asp-controller="Employee" asp-action="Index"
+               class="dashboard-action">
+                <div class="action-icon">🔍</div>
+                <strong>قائمة الموظفين</strong>
+                <div class="dashboard-muted">استعراض والبحث في بيانات الموظفين</div>
+            </a>
+        </div>
+
+        <div class="col-6 col-md-4 col-xl-4">
+            <a asp-controller="Project" asp-action="Index"
+               class="dashboard-action">
+                <div class="action-icon">📋</div>
+                <strong>كل المشروعات</strong>
+                <div class="dashboard-muted">متابعة بيانات وتفاصيل المشروعات</div>
+            </a>
+        </div>
+
+        <div class="col-12 col-md-4 col-xl-4">
+            <a asp-controller="Department" asp-action="Index"
+               class="dashboard-action">
+                <div class="action-icon">🏢</div>
+                <strong>إدارة الأقسام</strong>
+                <div class="dashboard-muted">عرض وتعديل أقسام الشركة</div>
+            </a>
+        </div>
+
+    </div>
+
+    <h4 class="dashboard-section-title">🕒 أحدث البيانات</h4>
+
+    <div class="row g-3">
+
+        <div class="col-12 col-xl-6">
+            <div class="dashboard-panel">
+                <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-3">
+                    <h5 class="mb-0">أحدث الموظفين</h5>
+                    <a asp-controller="Employee" asp-action="Index"
+                       class="btn btn-sm btn-outline-primary">
+                        عرض الكل
+                    </a>
+                </div>
+
+                <div class="table-responsive">
+                    <table class="table dashboard-table">
+                        <thead>
+                            <tr>
+                                <th>الموظف</th>
+                                <th>القسم</th>
+                                <th>تاريخ التعيين</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (Model.RecentEmployees.Count == 0)
+                            {
+                                <tr>
+                                    <td colspan="3" class="dashboard-empty">
+                                        لا يوجد موظفون مسجلون حتى الآن
+                                    </td>
+                                </tr>
+                            }
+                            else
+                            {
+                                @foreach (var employee in Model.RecentEmployees)
+                                {
+                                    <tr>
+                                        <td>
+                                            <strong>@employee.Name</strong>
+                                        </td>
+                                        <td>
+                                            <span class="dashboard-pill">
+                                                @employee.DepartmentName
+                                            </span>
+                                        </td>
+                                        <td>
+                                            @employee.HireDate.ToString("yyyy-MM-dd")
+                                        </td>
+                                    </tr>
+                                }
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12 col-xl-6">
+            <div class="dashboard-panel">
+                <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-3">
+                    <h5 class="mb-0">أحدث المشروعات</h5>
+                    <a asp-controller="Project" asp-action="Index"
+                       class="btn btn-sm btn-outline-primary">
+                        عرض الكل
+                    </a>
+                </div>
+
+                <div class="table-responsive">
+                    <table class="table dashboard-table">
+                        <thead>
+                            <tr>
+                                <th>المشروع</th>
+                                <th>الميزانية</th>
+                                <th>تاريخ البداية</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (Model.RecentProjects.Count == 0)
+                            {
+                                <tr>
+                                    <td colspan="3" class="dashboard-empty">
+                                        لا توجد مشروعات مسجلة حتى الآن
+                                    </td>
+                                </tr>
+                            }
+                            else
+                            {
+                                @foreach (var project in Model.RecentProjects)
+                                {
+                                    <tr>
+                                        <td>
+                                            <strong>@project.Title</strong>
+                                        </td>
+                                        <td>
+                                            @project.Budget.ToString("N0")
+                                        </td>
+                                        <td>
+                                            @project.StartDate.ToString("yyyy-MM-dd")
+                                        </td>
+                                    </tr>
+                                }
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="text-center dashboard-muted mt-4">
+        MVCPractice · لوحة إدارة الشركة
+    </div>
+
+</div>

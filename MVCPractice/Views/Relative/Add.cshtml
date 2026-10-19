@@ -1,0 +1,39 @@
+﻿<partial name="_BackButton" />
+@model MVCPractice.ViewModels.RelativeVM
+<div class="mb-3">
+    <button type="button"
+            class="btn btn-outline-secondary"
+            onclick="if (history.length > 1) { history.back(); } else { window.location.href='/Relative/Index'; }">
+        ← رجوع
+    </button>
+</div>
+<h2>Add Relative</h2>
+
+<form asp-action="SaveAdd" method="post">
+    <div class="mb-3">
+        <label asp-for="Name"></label>
+        <input asp-for="Name" class="form-control" />
+        <span asp-validation-for="Name" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Relation"></label>
+        <input asp-for="Relation" class="form-control" />
+        <span asp-validation-for="Relation" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="EmployeeId">Employee</label>
+        <select asp-for="EmployeeId" class="form-control">
+            <option value="0">-- Select Employee --</option>
+            @foreach (var emp in Model.Employees)
+            {
+                <option value="@emp.Id">@emp.Name</option>
+            }
+        </select>
+        <span asp-validation-for="EmployeeId" class="text-danger"></span>
+    </div>
+
+    <button type="submit" class="btn btn-success">Save</button>
+    <a asp-action="Index" class="btn btn-secondary">Cancel</a>
+</form>
